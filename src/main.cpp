@@ -8,11 +8,13 @@ For updates, see elexperiment.nl
 Use at your own risk. This code is far from stable.
 
 This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License.
-To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/
+To view a copy of this lice  http://creativecommons.org/licenses/by-sa/4.0/
 This basically means: if you use my code, acknowledge it.
 Also, you have to publish all modifications.
 
 */
+
+
 
 #include <Arduino.h>
 #include <FlySkyIBus.h>
@@ -75,14 +77,22 @@ WebSocketsServer wsServer = WebSocketsServer(81);
 // -- EEPROM
 Preferences preferences;
 
+/*
+change in layout from wouter
+uStep2  gpio13 --> gpio32 (gpio13 = AUX1)
+uStep1  gpio12 --> gpio26 (gpio12 = AUX0)
+uStep0  gpio14 --> gpio18 (gpio14 = AUX2)
+motBDir gpio15 --> gpio33 (gpio15 = AUX3)
+*/
+
 // -- Stepper motors
 #define motEnablePin 27
-#define motUStepPin1 14
-#define motUStepPin2 12
-#define motUStepPin3 13
+#define motUStepPin1 18
+#define motUStepPin2 26
+#define motUStepPin3 32
 
 fastStepper motLeft(5, 4, 0, motLeftTimerFunction);
-fastStepper motRight(2, 15, 1, motRightTimerFunction);
+fastStepper motRight(2, 33, 1, motRightTimerFunction);
 
 uint8_t microStep = 32;
 uint8_t motorCurrent = 150;
@@ -260,7 +270,7 @@ void setup() {
     char key[63];
     preferences.getBytes("wifi_ssid", ssid, 63);
     preferences.getBytes("wifi_key", key, 63);
-    Serial << "Connecting to '" << ssid << "'" << endl;
+    Serial << "Connecting to '" << ssid << "', '" << key << "'" << endl;
     // Serial << "Connecting to '" << ssid << "', '" << key << "'" << endl;
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid, key);
@@ -360,6 +370,8 @@ void setup() {
   //                   NULL,       /* Task handle. */
   //                   0);  /* Core where the task should run */
 
+  //preferences.putBytes("wifi_ssid", "internal_ext", 13);
+  //preferences.putBytes("wifi_key", "maximumsecurity123", 19);
   Serial.println("Ready");
 
 }
@@ -709,12 +721,14 @@ void parseCommand(char* data, uint8_t length) {
             memcpy(buf, &data[2], len);
             buf[len] = 0;
             preferences.putBytes("wifi_ssid", buf, 63);
+            Serial.println(buf);
             break;
           case 'k': // Update WiFi key
             len = length-3;
             memcpy(buf, &data[2], len);
             buf[len] = 0;
             preferences.putBytes("wifi_key", buf, 63);
+            Serial.println(buf);
             break;
           case 'm': // WiFi mode (0=AP, 1=use SSID)
             Serial.println(atoi(&data[2]));
