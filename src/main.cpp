@@ -214,10 +214,10 @@ void setup() {
   pinMode(motUStepPin3, OUTPUT);
   digitalWrite(motEnablePin, 1); // Disable steppers during startup
   setMicroStep(microStep);
-
+/*
   pinMode(ledPin, OUTPUT);
   digitalWrite(ledPin, 0);
-
+*/
   motLeft.init();
   motRight.init();
   motLeft.microStep = microStep;

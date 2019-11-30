@@ -12,7 +12,7 @@
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug",
-            "executable": "c:/Users/Robert/BalancingRobotESP32/BalancingRobotESP32/.pio/build/esp32dev/firmware.elf",
+            "executable": "C:/Users/Robert/BalancingRobotESP32/BalancingRobotESP32/.pio/build/esp32dev/firmware.elf",
             "toolchainBinDir": "C:/Users/Robert/.platformio/packages/toolchain-xtensa32/bin",
             "preLaunchTask": {
                 "type": "PlatformIO",
@@ -24,7 +24,7 @@
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug (skip Pre-Debug)",
-            "executable": "c:/Users/Robert/BalancingRobotESP32/BalancingRobotESP32/.pio/build/esp32dev/firmware.elf",
+            "executable": "C:/Users/Robert/BalancingRobotESP32/BalancingRobotESP32/.pio/build/esp32dev/firmware.elf",
             "toolchainBinDir": "C:/Users/Robert/.platformio/packages/toolchain-xtensa32/bin",
             "internalConsoleOptions": "openOnSessionStart"
         }
