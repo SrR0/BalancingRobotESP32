@@ -1,20 +1,3 @@
-/*
-A high speed balancing robot, running on an ESP32.
-
-Wouter Klop
-wouter@elexperiment.nl
-For updates, see elexperiment.nl
-
-Use at your own risk. This code is far from stable.
-
-This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License.
-To view a copy of this lice  http://creativecommons.org/licenses/by-sa/4.0/
-This basically means: if you use my code, acknowledge it.
-Also, you have to publish all modifications.
-
-*/
-
-
 
 #include <Arduino.h>
 #include <FlySkyIBus.h>
@@ -286,8 +269,8 @@ void setup() {
     Serial.println("Starting AP...");
     WiFi.mode(WIFI_AP_STA);
     //WiFi.softAPConfig( apIP, apIP, IPAddress(192,168,178,24)); 
-    WiFi.softAP("balancingRobot", "turboturbo");
-    Serial.print("AP started with IP address: ");
+    //WiFi.softAP("balancingRobot", "turboturbo");
+    //Serial.print("AP started with IP address: ");
     Serial.println(WiFi.softAPIP());
   }
 
