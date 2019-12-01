@@ -353,8 +353,6 @@ void setup() {
   //                   NULL,       /* Task handle. */
   //                   0);  /* Core where the task should run */
 
-  //preferences.putBytes("wifi_ssid", "internal_ext", 13);
-  //preferences.putBytes("wifi_key", "maximumsecurity123", 19);
   Serial.println("Ready");
 
 }
