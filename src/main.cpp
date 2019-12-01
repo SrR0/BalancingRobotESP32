@@ -269,8 +269,8 @@ void setup() {
     Serial.println("Starting AP...");
     WiFi.mode(WIFI_AP_STA);
     //WiFi.softAPConfig( apIP, apIP, IPAddress(192,168,178,24)); 
-    //WiFi.softAP("balancingRobot", "turboturbo");
-    //Serial.print("AP started with IP address: ");
+    WiFi.softAP("balancingRobot", "turboturbo");
+    Serial.print("AP started with IP address: ");
     Serial.println(WiFi.softAPIP());
   }
 

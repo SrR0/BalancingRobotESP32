@@ -45,13 +45,13 @@
 	 // var id = event.target.id;
 	 // var val = parseFloat(document.getElementById(id).value).toString(10);
 	  var val = e.value;
-	  var val2 = e.id + val + 'x';
+	  var val2 = e.id + val + '#';
 	  console.log(val2);
 	  connection.send(val2);
 		updateSliderText(e);
 	}
 	function sendCommand(cmd, val) {
-    var text = cmd + val + 'x';
+    var text = cmd + val + '#';
     console.log(text);
     connection.send(text);
   }

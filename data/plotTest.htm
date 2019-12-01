@@ -228,7 +228,7 @@ var plotOption = function(e) {
 }
 
 function sendCommand(cmd, val) {
-  var text = cmd + val + 'x';
+  var text = cmd + val + '#';
   <!--console.log(text);-->
   connection.send(text);
 }

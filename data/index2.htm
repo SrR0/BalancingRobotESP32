@@ -127,7 +127,7 @@ function createRadio(div, name, grp, cmd, optionNames, optionValues) {
     var r = document.createElement("INPUT");
     r.setAttribute("type", "radio");
     r.value = optionValues[i];
-    r.name='x';
+    r.name='#';
     r.className = 'radio';
     r.onchange = function () {sendCommand(grp, cmd, this.value)};
     div.appendChild(r);
