@@ -82,8 +82,8 @@ uint8_t motorCurrent = 150;
 float maxStepSpeed = 3000;
 
 // -- PID control
-//#define dT_MICROSECONDS 5000
-#define dT_MICROSECONDS 50000
+#define dT_MICROSECONDS 5000
+//#define dT_MICROSECONDS 50000
 #define dT dT_MICROSECONDS/1000000.0
 
 #define PID_ANGLE 0
