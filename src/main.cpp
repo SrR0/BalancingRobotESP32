@@ -70,12 +70,14 @@ motBDir gpio15 --> gpio33 (gpio15 = AUX3)
 
 // -- Stepper motors
 #define motEnablePin 27
-#define motUStepPin1 18
-#define motUStepPin2 26
-#define motUStepPin3 32
+#define motUStepPin1 14
+#define motUStepPin2 12
+#define motUStepPin3 13
 
 fastStepper motLeft(5, 4, 0, motLeftTimerFunction);
-fastStepper motRight(2, 33, 1, motRightTimerFunction);
+//fastStepper motRight(2, 33, 1, motRightTimerFunction);
+fastStepper motRight(2, 15, 1, motRightTimerFunction);
+
 
 uint8_t microStep = 32;
 uint8_t motorCurrent = 150;
@@ -197,10 +199,10 @@ void setup() {
   pinMode(motUStepPin3, OUTPUT);
   digitalWrite(motEnablePin, 1); // Disable steppers during startup
   setMicroStep(microStep);
-/*
+
   pinMode(ledPin, OUTPUT);
   digitalWrite(ledPin, 0);
-*/
+
   motLeft.init();
   motRight.init();
   motLeft.microStep = microStep;
