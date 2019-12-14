@@ -69,14 +69,21 @@ motBDir gpio15 --> gpio33 (gpio15 = AUX3)
 */
 
 // -- Stepper motors
+/*
 #define motEnablePin 27
 #define motUStepPin1 14
 #define motUStepPin2 12
 #define motUStepPin3 13
+*/
 
-fastStepper motLeft(5, 4, 0, motLeftTimerFunction);
-//fastStepper motRight(2, 33, 1, motRightTimerFunction);
-fastStepper motRight(2, 15, 1, motRightTimerFunction);
+#define motEnablePin 27
+#define motUStepPin1 18
+#define motUStepPin2 26
+#define motUStepPin3 32
+
+
+fastStepper motLeft(2, 15, 0, motLeftTimerFunction);
+fastStepper motRight(5, 4, 1, motRightTimerFunction);
 
 
 uint8_t microStep = 32;
@@ -111,6 +118,9 @@ float filterAngle = 0;
 float angleOffset = 2.0;
 float gyroFilterConstant = 0.996;
 float gyroGain = 1.0;
+
+static volatile long leftInterrupt;
+static volatile long rightInterrupt;
 
 // -- Others
 #define ledPin 2
@@ -158,11 +168,13 @@ portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
 void IRAM_ATTR motLeftTimerFunction() {
   portENTER_CRITICAL_ISR(&timerMux);
   motLeft.timerFunction();
+  leftInterrupt++;
   portEXIT_CRITICAL_ISR(&timerMux);
 }
 void IRAM_ATTR motRightTimerFunction() {
   portENTER_CRITICAL_ISR(&timerMux);
   motRight.timerFunction();
+  rightInterrupt++;
   portEXIT_CRITICAL_ISR(&timerMux);
 }
 
@@ -189,7 +201,7 @@ void setup() {
 
   Serial.begin(115200);
   Serial.println("V0.04");
-  IBus.begin(Serial2);
+  //IBus.begin(Serial2);
   preferences.begin("settings", false);  // false = RW-mode
   // preferences.clear();  // Remove all preferences under the opened namespace
 
@@ -200,8 +212,8 @@ void setup() {
   digitalWrite(motEnablePin, 1); // Disable steppers during startup
   setMicroStep(microStep);
 
-  pinMode(ledPin, OUTPUT);
-  digitalWrite(ledPin, 0);
+  //pinMode(ledPin, OUTPUT);
+  //digitalWrite(ledPin, 0);
 
   motLeft.init();
   motRight.init();
@@ -217,13 +229,14 @@ void setup() {
   }
 
   // Gyro setup
+  /*
   delay(200);
   Wire.begin(21,22,400000);
   imu.initialize();
   imu.setFullScaleGyroRange(MPU6050_GYRO_FS_500);
   // Calculate and store gyro offsets
   delay(50);
-
+*/
   // Init EEPROM, if not done before
   #define PREF_VERSION 1  // if setting structure has been changed, count this number up to delete all settings
   if (preferences.getUInt("pref_version", 0) != PREF_VERSION) {
@@ -233,6 +246,7 @@ void setup() {
   }
 
   // Read gyro offsets
+  /*
   Serial << "Gyro calibration values: ";
   for (uint8_t i=0; i<3; i++) {
     char buf[16];
@@ -241,12 +255,12 @@ void setup() {
     Serial << gyroOffset[i] << "\t";
   }
   Serial << endl;
-
+*/
   // Read angle offset
   angleOffset = preferences.getFloat("angle_offset", 0.0);
 
   // Perform initial gyro measurements
-  initSensor(50);
+  //initSensor(50);
 
   // Connect to Wifi and setup OTA if known Wifi network cannot be found
   boolean wifiConnected = 0;
@@ -360,7 +374,7 @@ void setup() {
 }
 
 float steerInput, speedInput;
-
+/*
 void loop() {
   static unsigned long tLast = 0;
   float pidAngleOutput = 0;
@@ -562,6 +576,56 @@ void loop() {
   }
 
   // delay(1);
+}
+*/
+
+void loop() {
+  static unsigned long tLast = 0;
+  float pidAngleOutput = 0;
+  float avgMotSpeed;
+  float steer = 0;
+  static float avgSteer;
+  static float avgSpeed;
+  static boolean enableControl = 0;
+  static float avgMotSpeedSum = 0;
+  int32_t avgMotStep;
+  float pidPosOutput = 0, pidSpeedOutput = 0;
+  static uint8_t k = 0;
+  static float avgBatteryVoltage = 0;
+  static uint32_t lastInputTime = 0;
+  uint32_t tNowMs;
+  float absSpeed = 0;
+  float noiseValue = 0;
+
+  unsigned long tNow = micros();
+  tNowMs = millis();
+  Serial.println("forward");
+
+  motLeft.speed=50;
+  motRight.speed=50;
+  digitalWrite(motEnablePin, 1); // Inverted action on enable pin
+  motLeft.update();
+  motRight.update();
+  delay(500);
+  Serial.println("reverse");
+
+  motLeft.speed=-100;
+  motRight.speed=-100;
+  motLeft.update();
+  motRight.update();
+  delay(500);
+
+  Serial.print("left interrupt: ");
+  Serial.println(leftInterrupt);
+  Serial.print("right interrupt: ");
+  Serial.println(rightInterrupt);
+  Serial.println();
+  
+  parseSerial();
+
+  ArduinoOTA.handle();
+  wsServer.loop();
+  // Serial << micros()-tNow << endl;
 }
 
 void parseSerial() {
