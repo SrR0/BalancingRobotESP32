@@ -1,3 +1,18 @@
+/*
+A high speed balancing robot, running on an ESP32.
+
+Wouter Klop
+wouter@elexperiment.nl
+For updates, see elexperiment.nl
+
+Use at your own risk. This code is far from stable.
+
+This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License.
+To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/
+This basically means: if you use my code, acknowledge it.
+Also, you have to publish all modifications.
+
+*/
 
 #include <Arduino.h>
 #include <FlySkyIBus.h>
