@@ -28,6 +28,7 @@ void fastStepper::init() {
 
 void IRAM_ATTR fastStepper::timerFunction() {
   // portENTER_CRITICAL_ISR(&timerMux);
+
   if (!pinState) {
     _step += dir; // Step is made on rising edge
     GPIO.out_w1ts = 1<<_stepPin;
@@ -73,6 +74,10 @@ void fastStepper::update() {
       absSpeedInt = (uint32_t) (400000.0/absSpeed);
       // Serial.println(absSpeedInt);
       timerAlarmWrite(_timer, absSpeedInt, true);
+
+      timerAlarmDisable(_timer);
+      timerEnable = 0;
+
       if (!timerEnable) {
         timerAlarmEnable(_timer); // Re-enable timer
         timerEnable = 1;

@@ -621,21 +621,22 @@ void loop() {
   digitalWrite(motEnablePin, 1); // Inverted action on enable pin
   motLeft.update();
   motRight.update();
-  delay(500);
+  
+  delay(5);
   Serial.println("reverse");
 
   motLeft.speed=-100;
   motRight.speed=-100;
   motLeft.update();
   motRight.update();
-  delay(500);
-
+  delay(5);
+/*
   Serial.print("left interrupt: ");
   Serial.println(leftInterrupt);
   Serial.print("right interrupt: ");
   Serial.println(rightInterrupt);
   Serial.println();
-  
+ */ 
   parseSerial();
 
   ArduinoOTA.handle();

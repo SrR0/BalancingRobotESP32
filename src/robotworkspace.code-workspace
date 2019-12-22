@@ -2,6 +2,10 @@
 	"folders": [
 		{
 			"path": "C:\\Users\\Robert\\BalancingRobotRepo\\BalancingRobotESP32"
+		},
+		{
+			"name": "ps3connect",
+			"path": "C:\\Users\\Robert\\Documents\\PlatformIO\\Projects\\ps3connect"
 		}
 	],
 	"settings": {}
